@@ -24,7 +24,7 @@ class SendCodeRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => ['required', 'min:9', 'max:9']
+            'phone' => ['required', 'digits:9']
         ];
     }
 }

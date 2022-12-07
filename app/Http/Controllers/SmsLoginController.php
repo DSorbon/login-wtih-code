@@ -10,7 +10,7 @@ use App\Models\ConfirmPhone;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 
-class SmsLogin extends Controller
+class SmsLoginController extends Controller
 {
     public function sendCode(SendCodeRequest $request)
     {
@@ -45,7 +45,7 @@ class SmsLogin extends Controller
     public function checkCode($phone, $code)
     {
         $confirmCode = false;
-        $confirmPhone = ConfirmPhone::where('phone',$phone)->latest()->first();
+        $confirmPhone = ConfirmPhone::wherePhone($phone)->latest()->first();
         $message = 'Код неверное';
 
         if ($confirmPhone) {
@@ -55,9 +55,8 @@ class SmsLogin extends Controller
                 $message = 'Код больше не жизнеспособен, нажмите на повторное отправке кода!';
             } else if (!$confirmPhone->confirmed) {
                 $confirmCode = ConfirmPhone::wherePhone($phone)->whereCode($code)->latest()->first();
-                $confirmPhone->update(['confirmed' => 1]);
+                $confirmCode ? $confirmPhone->update(['confirmed' => 1]) : $confirmPhone->update(['qty' => $confirmPhone->qty + 1]);
             }
-            $confirmPhone->update(['qty' => $confirmPhone->qty + 1]);
         }
 
         return ['confirmed' => $confirmCode, 'message' => $message];

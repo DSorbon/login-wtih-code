@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\SmsLogin;
+use App\Http\Controllers\SmsLoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'auth'], function () {
-   Route::post('send-code', [SmsLogin::class,'sendCode']);
-   Route::post('confirm-code', [SmsLogin::class, 'confirmCode']);
+   Route::post('send-code', [SmsLoginController::class,'sendCode']);
+   Route::post('confirm-code', [SmsLoginController::class, 'confirmCode']);
 });
