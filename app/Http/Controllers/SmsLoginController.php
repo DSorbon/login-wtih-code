@@ -15,10 +15,14 @@ class SmsLoginController extends Controller
     public function sendCode(SendCodeRequest $request)
     {
         $code = rand(1000,9999);
-
         ConfirmPhone::create($request->validated() + ['code' => $code]);
-
+        
+        // For local testing purposes
         return response()->json(['code' => $code]);
+        
+        // For API integration
+        // ..
+        // ..
     }
 
     public function confirmCode(ConfirmCodeRequest $request)
