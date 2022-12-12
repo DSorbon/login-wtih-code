@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SendSmsEvent;
 use App\Http\Requests\ConfirmCodeRequest;
 use App\Http\Requests\SendCodeRequest;
 use App\Http\Requests\SignInWithCodeRequest;
@@ -22,6 +23,8 @@ class SmsLoginController extends Controller
         
         // For API integration
         // ..
+        $message = "Ваш код подтверждения: $code";
+        SendSmsEvent::dispatch($request->phone, $message);
         // ..
     }
 
